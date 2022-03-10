@@ -11,4 +11,4 @@ class Edge :
         return self.car2
 
     def get_attributes(self):
-        return {'relative_x': relative_x}
+        return {'relative_x': self.relative_x}
