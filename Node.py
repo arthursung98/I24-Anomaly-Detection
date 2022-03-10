@@ -13,5 +13,5 @@ class Node(object):
 
     def get_attributes(self):
         return {'ID': ID, 
-                'x_position': x_position, 
-                'y_position': y_position}
+                'x_position': self.x_position, 
+                'y_position': self.y_position}
