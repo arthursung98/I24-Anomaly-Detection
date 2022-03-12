@@ -31,10 +31,9 @@ class Graph:
             return list(map(triples, self.edges))
 
     def add_node(self, node):
-        if node.ID in [node.ID for node in self.nodes]:
-            raise ValueError('Duplicate Node')
-        else:
-            self.nodes.append(node)
+#         if not node.ID in [node.ID for node in self.nodes]:
+#             self.nodes.append(node)
+        self.nodes.append(node)
     
     def add_edge(self, edge):
         car1 = edge.get_car1()
