@@ -31,13 +31,14 @@ class Graph:
             return list(map(triples, self.edges))
 
     def add_node(self, node):
-#         if not node.ID in [node.ID for node in self.nodes]:
-#             self.nodes.append(node)
-        self.nodes.append(node)
+        if not node.ID in [node.ID for node in self.nodes]:
+            self.nodes.append(node)
     
     def add_edge(self, edge):
         car1 = edge.get_car1()
         car2 = edge.get_car2()
         if not (car1 in self.nodes and car2 in self.nodes):
             raise ValueError('Node not in graph')
-        self.edges.append(edge)
+            
+        if not car1 == car2 :
+            self.edges.append(edge)
