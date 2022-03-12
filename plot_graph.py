@@ -11,18 +11,29 @@ Plots a Graph object using networkx library
 @param    graphObject - an object of type Graph
 '''
 def plot_graph(graphObject):
+    if len(graphObject.get_nodes()) == 0:
+        # nothing to graph
+        print('<plot_graph> Nothing to graph. Graph is empty')
+        return
+
+    has_edges = len(graphObject.get_edges()) != 0
+    print(has_edges)
     # initialize nx graph to visualize
     G = nx.Graph()
     # add nodes from graph object
     G.add_nodes_from(graphObject.get_nodes(True))
     # iterate through dictionary and add to G
-    G.add_edges_from(graphObject.get_edges(True))
+    if has_edges:
+        G.add_edges_from(graphObject.get_edges(True))
 
     fig, ax = plt.subplots()
     # pos holds the position of where all individual nodes will be plotted
-    pos = nx.spring_layout(G)
+    node_pos = graphObject.get_nodes_pos()
+    pos = nx.rescale_layout_dict(node_pos)
+    # pos = layout(G)
     nodes = nx.draw_networkx_nodes(G, pos=pos, ax=ax)
-    edges = nx.draw_networkx_edges(G, pos=pos, ax=ax)
+    if has_edges:
+        edges = nx.draw_networkx_edges(G, pos=pos, ax=ax)
 
     annot = ax.annotate("", xy=(0,0), xytext=(20,20),textcoords="offset points",
                       bbox=dict(boxstyle="round", fc="w"),
@@ -69,7 +80,9 @@ def plot_graph(graphObject):
         if event.inaxes == ax:
             # check if nodes/edges contain mouse event
             cont, ind = nodes.contains(event)
-            cont2, ind2 = edges.contains(event)
+            cont2 = False
+            if has_edges:
+                cont2, ind2 = edges.contains(event)
             # ind is the item containing the event
             if cont or cont2:
                 # update the annotation for the item
@@ -103,7 +116,7 @@ def generate_random_graph(num_of_nodes=5, verbose=False):
             print('Added node: {nodeID} {attribute}'.format(nodeID = node.get_ID(), attribute = node.get_attributes()))
 
     # randomly pick two nodes and form an edge (do this X times)
-    for i in range(20):
+    for i in range(0):
         two_random_nodes = random.sample(list_of_nodes, 2)
         edge = Edge(two_random_nodes[0], two_random_nodes[1])
         graph.add_edge(edge)

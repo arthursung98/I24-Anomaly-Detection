@@ -1,5 +1,6 @@
 from Node import Node
 from Edge import Edge
+import numpy as np
 
 class Graph:
     # nodes is a list of node objects in the graph 
@@ -29,6 +30,10 @@ class Graph:
             def triples(edge):
                 return (edge.car1, edge.car2, edge.get_attributes())
             return list(map(triples, self.edges))
+
+    def get_nodes_pos(self):
+        # returns a dictionary of nodes paired with np.array(x_pos, y_pos)
+        return {node: np.array([node.x_position, node.y_position]) for node in self.nodes}
 
     def add_node(self, node):
         if not node.ID in [node.ID for node in self.nodes]:
