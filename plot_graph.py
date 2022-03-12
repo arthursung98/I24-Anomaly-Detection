@@ -15,19 +15,25 @@ def plot_graph(graphObject):
         # nothing to graph
         print('<plot_graph> Nothing to graph. Graph is empty')
         return
-    
+
+    has_edges = len(graphObject.get_edges()) != 0
+    print(has_edges)
     # initialize nx graph to visualize
     G = nx.Graph()
     # add nodes from graph object
     G.add_nodes_from(graphObject.get_nodes(True))
     # iterate through dictionary and add to G
-    G.add_edges_from(graphObject.get_edges(True))
+    if has_edges:
+        G.add_edges_from(graphObject.get_edges(True))
 
     fig, ax = plt.subplots()
     # pos holds the position of where all individual nodes will be plotted
-    pos = nx.spring_layout(G)
+    node_pos = graphObject.get_nodes_pos()
+    pos = nx.rescale_layout_dict(node_pos)
+    # pos = layout(G)
     nodes = nx.draw_networkx_nodes(G, pos=pos, ax=ax)
-    edges = nx.draw_networkx_edges(G, pos=pos, ax=ax)
+    if has_edges:
+        edges = nx.draw_networkx_edges(G, pos=pos, ax=ax)
 
     annot = ax.annotate("", xy=(0,0), xytext=(20,20),textcoords="offset points",
                       bbox=dict(boxstyle="round", fc="w"),
@@ -75,7 +81,7 @@ def plot_graph(graphObject):
             # check if nodes/edges contain mouse event
             cont, ind = nodes.contains(event)
             cont2 = False
-            if len(edges) > 0:
+            if has_edges:
                 cont2, ind2 = edges.contains(event)
             # ind is the item containing the event
             if cont or cont2:
