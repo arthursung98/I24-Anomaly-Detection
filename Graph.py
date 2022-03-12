@@ -42,5 +42,6 @@ class Graph:
     def add_edge(self, edge):
         car1 = edge.get_car1()
         car2 = edge.get_car2()
-        if (car1 in self.nodes and car2 in self.nodes):
+        
+        if ((car1 in self.nodes and car2 in self.nodes) and (not car1 == car2)):
             self.edges.append(edge)
